@@ -201,7 +201,14 @@ div.sudoku-popup {
   border: 3px solid black;
   background-color: white;
   display: none; }
+div.sudoku-popup#ok {
+    margin-left: 300px;
+   }
+div.sudoku-popup#errors {
+    margin-left: 300px;
+   }
 div.sudoku-popup#victory {
+  margin-left: 300px;
   background-color: yellow; }
 div.sudoku-popup#intro {
   width: 460px;

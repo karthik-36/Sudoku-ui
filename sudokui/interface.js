@@ -573,7 +573,7 @@ $(document).on('click', '#clearbutton', function (ev) {
 
 // Depressing the "check" button.
 
-$(document).on('mousedown touchstart', '#checkbutton', function (ev) {
+function checkUpdate(ev){
   hidepopups();
   var state = currentstate();
   var sofar = boardsofar(state);
@@ -587,6 +587,23 @@ $(document).on('mousedown touchstart', '#checkbutton', function (ev) {
     showpopup('#errors');
   }
   ev.stopPropagation();
+}
+
+$(document).on('mousedown touchstart', '#checkbutton', function (ev) {
+  // hidepopups();
+  // var state = currentstate();
+  // var sofar = boardsofar(state);
+  // // Check for conflicts.
+  // var conflicts = SudokuHint.conflicts(sofar);
+  // if (conflicts.length == 0) {
+  //   // We are all good so far - and maybe have a win.
+  //   showpopup(countfilled(sofar) == Sudoku.S ? '#victory' : '#ok');
+  // } else {
+  //   // Oops - there is some mistake.
+  //   showpopup('#errors');
+  // }
+  // ev.stopPropagation();
+  checkUpdate(ev);
 });
 
 // Releasing the "check" button.
