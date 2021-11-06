@@ -94,6 +94,10 @@ function setupgame(seed) {
   // Remember the moment this game was created as gentime.
   var gentime = (new Date).getTime();
   // Commit the game state to the URL.
+
+
+
+
   commitstate({
     puzzle: puzzle,
     seed: seed,
@@ -130,6 +134,8 @@ function commitstate(state) {
   sethashdata(encodeboardstate(state));
   // Save the state in localStorage also.
   savestate(storagename(state.seed), state);
+  hidepopups();
+  checkUpdateOnEvent();
 }
 
 // Parses a url-parameter-style string after the current URL hash parts.
@@ -346,7 +352,6 @@ $(document).keypress(function (e) {
   setTimeout(function () {
     commitstate(state);
   }, 0);
-
 });
 
 
@@ -571,6 +576,23 @@ $(document).on('click', '#clearbutton', function (ev) {
   commitstate(cleared);
 });
 
+
+
+function checkUpdateOnEvent(){
+  hidepopups();
+  var state = currentstate();
+  var sofar = boardsofar(state);
+  // Check for conflicts.
+  var conflicts = SudokuHint.conflicts(sofar);
+  if (conflicts.length == 0) {
+    // We are all good so far - and maybe have a win.
+    showpopup(countfilled(sofar) == Sudoku.S ? '#victory' : '#ok');
+  } else {
+    // Oops - there is some mistake.
+    showpopup('#errors');
+  }
+}
+
 // Depressing the "check" button.
 
 function checkUpdate(ev){
@@ -588,7 +610,7 @@ function checkUpdate(ev){
   }
   ev.stopPropagation();
 }
-
+//checkUpdate(ev)
 $(document).on('mousedown touchstart', '#checkbutton', function (ev) {
   // hidepopups();
   // var state = currentstate();
@@ -603,7 +625,9 @@ $(document).on('mousedown touchstart', '#checkbutton', function (ev) {
   //   showpopup('#errors');
   // }
   // ev.stopPropagation();
-  checkUpdate(ev);
+  console.log("ev");
+  console.log(ev);
+  checkUpdate(ev)
 });
 
 // Releasing the "check" button.
@@ -655,6 +679,12 @@ function setcurnumber(num) {
 function hidepopups() {
   $('div.sudoku-popup').css('display', 'none');
 }
+
+function hidepopupsStatus() {
+  $('div.sudoku-popup').css('display', 'none');
+}
+
+
 
 // Unhide the popup with a given id.
 
