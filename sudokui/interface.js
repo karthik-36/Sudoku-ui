@@ -352,6 +352,12 @@ $(document).keypress(function (e) {
   setTimeout(function () {
     commitstate(state);
   }, 0);
+
+  $(document).trigger('log', ['keyboard_input', {
+    cellNumber : state.currFocus,
+    inputNumber: state.answer[pos] + 1
+  }]);
+  
 });
 
 
@@ -367,7 +373,9 @@ document.onkeydown = function (e) {
     }
   }
 
-  console.log(e.key);
+
+  let oldState = state.currFocus;
+  let movement = e.key;
   switch (e.key) {
     case 'ArrowUp':
       // up arrow
@@ -415,6 +423,13 @@ document.onkeydown = function (e) {
 
   // state.currFocus = parseInt(this.id.substring(2));
    commitstate(state);
+
+   $(document).trigger('log', ['Arrow_movement', {
+    movement : movement,
+    previousState : oldState,
+    newState : state.currFocus
+  }]);
+  
 };
 
 // Clicks outside other regions set the number palette to 'eraser'.
@@ -582,15 +597,28 @@ function checkUpdateOnEvent(){
   hidepopups();
   var state = currentstate();
   var sofar = boardsofar(state);
+  let boardStatus = 'start';
+
+  const victory = '#victory';
+  const ok = '#ok';
+  const errors = '#errors';
   // Check for conflicts.
   var conflicts = SudokuHint.conflicts(sofar);
   if (conflicts.length == 0) {
     // We are all good so far - and maybe have a win.
-    showpopup(countfilled(sofar) == Sudoku.S ? '#victory' : '#ok');
+    boardStatus = countfilled(sofar) == Sudoku.S ? victory : ok;
+    showpopup(boardStatus);
+
   } else {
     // Oops - there is some mistake.
-    showpopup('#errors');
+    boardStatus = errors;
+    showpopup(errors);
   }
+
+  $(document).trigger('log', ['current_board_status', {
+    boardStates : boardStatus,
+  }]);
+
 }
 
 // Depressing the "check" button.
@@ -627,6 +655,7 @@ $(document).on('mousedown touchstart', '#checkbutton', function (ev) {
   // ev.stopPropagation();
   console.log("ev");
   console.log(ev);
+  
   checkUpdate(ev)
 });
 

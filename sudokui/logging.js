@@ -178,6 +178,7 @@ if (ENABLE_NETWORK_LOGGING) {
 // "A" version network log submission function
 // submits to the google form at this URL:
 // docs.google.com/forms/d/1Ao......................................QE0/edit
+//https://docs.google.com/forms/d/1aBAws1ePI2JmPfUWJQPg0VuSSFUKLwngkQ7Ts2RCRns/edit               "entry.1291686978": uid,
 function sendNetworkLog(
     uid,
     time,
@@ -186,21 +187,23 @@ function sendNetworkLog(
     info,
     state,
     version) {
-  var formid = "e/1FA==--FIX-ME-BY-SETTING-UP-LOGGING-JS--==NndeQ";
+  var formid = "1aBAws1ePI2JmPfUWJQPg0VuSSFUKLwngkQ7Ts2RCRns";
   var data = {
-    "entry.1291686978": uid,
-    "entry.211470577": time,
-    "entry.293924811": name,
-    "entry.1498801356": target,
-    "entry.1636492479": info,
-    "entry.22711366": state,
-    "entry.1740074722": version
+    "entry.445214150": uid,
+    "entry.51227470": time,
+    "entry.486391207": name,
+    "entry.1767052038": target,
+    "entry.1772070741": info,
+    "entry.2018326305": state,
+    "entry.1137142159": version
   };
   var params = [];
   for (key in data) {
     params.push(key + "=" + encodeURIComponent(data[key]));
   }
   // Submit the form using an image to avoid CORS warnings.
+  console.log("https://docs.google.com/forms/d/" + formid +
+  "/formResponse?" + params.join("&"));
   (new Image).src = "https://docs.google.com/forms/d/" + formid +
      "/formResponse?" + params.join("&");
 }
