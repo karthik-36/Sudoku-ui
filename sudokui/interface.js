@@ -136,6 +136,11 @@ function commitstate(state) {
   savestate(storagename(state.seed), state);
   hidepopups();
   checkUpdateOnEvent();
+
+
+
+ 
+
 }
 
 // Parses a url-parameter-style string after the current URL hash parts.
@@ -241,6 +246,7 @@ function redraw(givenstate, pos) {
   if (victory) {
     runningtime = false;
     $('.timer').text(formatelapsed(state.elapsed));
+    // here victory
   } else {
     $('#victory').css('display', 'none');
   }
@@ -617,7 +623,19 @@ function checkUpdateOnEvent(){
 
   $(document).trigger('log', ['current_board_status', {
     boardStates : boardStatus,
+    timePassed : boardStatus == '#victory' ? formatelapsed((new Date).getTime() - starttime) :  formatelapsed(state.elapsed)
   }]);
+
+//   $('.timer').text(formatelapsed(state.elapsed));
+//   // here victory
+// } else {
+//   $('#victory').css('display', 'none');
+// }
+// // Render timer UI
+// $('.progress').css('display', victory ? 'none' : 'inline');
+// $('.finished').css('display', victory ? 'inline' : 'none');
+// if (!victory) {
+//   $('.timer').text(formatelapsed((new Date).getTime() - starttime));
 
 }
 
@@ -638,7 +656,7 @@ function checkUpdate(ev){
   }
   ev.stopPropagation();
 }
-//checkUpdate(ev)
+
 $(document).on('mousedown touchstart', '#checkbutton', function (ev) {
   // hidepopups();
   // var state = currentstate();
